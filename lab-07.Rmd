@@ -42,7 +42,7 @@ evals%>%
 
 _*Comments:*_
 
-_The distribution of the scores has a negative skew. meaning most scores are on the higher end, suggesting that students generally rate courses as above average. This is somewhat expected as students usually make their own choices in courses they take so it would be more likely for them to enjoy it, if they picked it based on their preference._
+_The distribution of the scores has a negative skew. meaning most scores are on the higher end, suggesting that students generally rate courses as above average. This is somewhat expected as students usually make their own choices in courses they take so it would be more likely for them to enjoy it, if they picked it based on their preferences._
 
 
 
@@ -50,10 +50,40 @@ _The distribution of the scores has a negative skew. meaning most scores are on 
 2.  Visualize and describe the relationship between `score` and `bty_avg` using `geom_point()` to represent the data. 
 
 ```{r scatterplot}
-# add code here
+
+evals%>%
+  ggplot(mapping = aes(
+    x = score,
+    y = bty_avg
+  )) +
+  
+  geom_point() +
+  
+  labs(
+    x = "Score",
+    y = "Beauty Average",
+    title = "Scatterplot of Beauty Average against Score"
+  )
+
+evals%>%
+  ggplot(mapping = aes(
+    x = score,
+    y = bty_avg
+  )) +
+  
+  geom_jitter() +
+  
+  labs(
+    x = "Score",
+    y = "Beauty Average",
+    title = "Scatterplot of Beauty Average against Score"
+  )
+
 ```
 
-*Add your narrative and other details here.*
+_*The relationship between the score and the beauty average appears to have a slight positive correlation. Jitter moves the points slightly by adding a small random variation to our points. This makes the plot easier to visualise and avoids over-plotting in our graph, especially if the data is discrete._
+
+
 
 # Exercise 2: Simple Linear regression with a numerical predictor
 
