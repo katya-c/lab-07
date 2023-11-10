@@ -53,32 +53,31 @@ _The distribution of the scores has a negative skew. meaning most scores are on 
 
 evals%>%
   ggplot(mapping = aes(
-    x = score,
-    y = bty_avg
+    x = bty_avg,
+    y = score
   )) +
   
   geom_point() +
   
   labs(
-    x = "Score",
-    y = "Beauty Average",
-    title = "Scatterplot of Beauty Average against Score"
+    x = "Beauty Average",
+    y = "Score",
+    title = "Scatterplot of Score against Beauty Average"
   )
 
 evals%>%
   ggplot(mapping = aes(
-    x = score,
-    y = bty_avg
+    x = bty_avg,
+    y = score
   )) +
   
   geom_jitter() +
   
   labs(
-    x = "Score",
-    y = "Beauty Average",
-    title = "Scatterplot of Beauty Average against Score"
+    x = "Beauty Average",
+    y = "Score",
+    title = "Scatterplot of Score against Beauty Average"
   )
-
 ```
 
 _*The relationship between the score and the beauty average appears to have a slight positive correlation. Jitter moves the points slightly by adding a small random variation to our points. This makes the plot easier to visualise and avoids over-plotting in our graph, especially if the data is discrete._
@@ -89,51 +88,83 @@ _*The relationship between the score and the beauty average appears to have a sl
 
 1. Fit a linear model called `score_bty_fit` to predict average professor evaluation `score` from average beauty rating (`bty_avg`). Print the regression output using `tidy()`.
 
-```{r fit-score_bty_fit, eval = FALSE}
-# remove eval = FALSE from the code chunk options after filling in the blanks
+```{r fit-score_bty_fit}
+
 score_bty_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(___ ~ ___, data = ___)
+  fit(score ~ bty_avg, data = evals)
 ```
 
-```{r tidy-score_bty_fit, eval = FALSE}
-# remove eval = FALSE from the code chunk options after filling in the blanks
-tidy(___)
+```{r tidy-score_bty_fit}
+
+tidy(score_bty_fit)
 ```
 
-*Add your linear model here. Don't worry too much about notation, you can use things like score-hat.*
+_score = 0.06663704*bty_avg + 3.88033795_
 
 2. Plot the data again using `geom_jitter()`, and add the regression line.
 
-```{r viz-score_bty_fit,eval=FALSE}
-# add your plot here. Hint, you can add the regression line using geom_smooth()
+```{r viz-score_bty_fit}
+
+evals%>%
+  ggplot(mapping = aes(
+    x = bty_avg,
+    y = score
+  )) +
+  
+  geom_jitter() +
+  
+  geom_smooth(method=lm) +
+  
+  labs(
+    x = "Beauty Average",
+    y = "Score",
+    title = "Scatterplot of Score against Beauty Average"
+  )
+
 ```
 
 3. Interpret the slope of the linear model in context of the data.
 
-*Add your interpretation here*
+_The linear model has a slight positive correlation, the score increases 0.06663704 times as the beauty average increases._
+
+
 
 4. Interpret the intercept of the linear model in context of the data. Comment on whether or not the intercept makes sense in this context.
 
-*Add your interpretation here*
+_The minimum value of the score (where the linear model intercepts the y axis) is 3.88033795 which happens if the beauty average was to be 0, which doesn't make much sense within this context._
+
 
 5. Determine the $R^2$ of the model and interpret it in the context of the data.
 
 ```{r R2, eval = FALSE}
 # remove eval = FALSE from the code chunk options after filling in the blanks
-glance(___)$___
+glance(score_bty_fit)$r.squared
 ```
 
-*Add your interpretation here*
+_This value mean that 3.5% of the error in the data can be accounted by this linear model, suggesting that it is not a very good representation of the data._
 
 6. Make a plot of residuals vs. predicted values for the model above.
 
-```{r viz-score_bty_fit-diagnostic, eval = FALSE}
-# remove eval = FALSE from the code chunk options after filling in the blanks
+```{r viz-score_bty_fit-diagnostic}
+
+
 score_bty_aug <- augment(score_bty_fit$fit)
 
-ggplot(___) + ...
+ggplot(data = score_bty_aug,
+       mapping = aes(
+         x = .fitted,
+         y = .resid
+       )) +
+  
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  
+  geom_jitter()
+  
+  
 ```
+_The residuals appear not to be completely randomly distributed throughout the graph, suggesting it might not be a very good linear model._
+
 
 # Exercise 3: Simple Linear regression with a categorical predictor
 
